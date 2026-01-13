@@ -48,9 +48,23 @@ const AnalyticsPage = () => {
 			setLoading(true);
 			setError(null);
 			const data = await analyticsService.getCombinedAnalytics(timeFilter);
-			// Fetch accuracy separately as it might be a different endpoint/logic
-			const accuracy = await analyticsService.getSystemAccuracy();
-			setAnalyticsData({ ...data, accuracyMetrics: accuracy });
+			console.log("✅ Combined Analytics fetched:", data);
+
+			// Fetch accuracy separately
+			console.log("🔄 Fetching accuracy metrics...");
+			try {
+				const accuracy = await analyticsService.getSystemAccuracy();
+				console.log("✅ Accuracy Config fetched:", accuracy);
+				// Check for null/undefined or empty metrics
+				if (!accuracy || !accuracy.metrics) {
+					console.warn("⚠️ Accuracy metrics are empty/null:", accuracy);
+				}
+				setAnalyticsData({ ...data, accuracyMetrics: accuracy });
+			} catch (accErr) {
+				console.error("❌ Accuracy fetch failed:", accErr);
+				// Don't fail the whole page, just continue with data
+				setAnalyticsData({ ...data, accuracyMetrics: null });
+			}
 		} catch (err) {
 			console.error("Error fetching analytics data:", err);
 			setError("Failed to load analytics data");
@@ -222,14 +236,16 @@ const AnalyticsPage = () => {
 							<AnalyticsOverviewCards data={analyticsData} />
 
 							{/* System Accuracy Section */}
-							<motion.div
-								initial={{ opacity: 0, y: 20 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 0.15 }}
-								className={`rounded-xl p-6 print:bg-white print:shadow print:border transition-colors duration-300 ${isDarkMode ? 'bg-gray-700 bg-opacity-50 backdrop-filter backdrop-blur-lg' : 'bg-white shadow-lg border border-gray-200'}`}
-							>
-								<AccuracyMetrics data={analyticsData.accuracyMetrics} />
-							</motion.div>
+							{analyticsData.accuracyMetrics && (
+								<motion.div
+									initial={{ opacity: 0, y: 20 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ delay: 0.15 }}
+									className={`rounded-xl p-6 print:bg-white print:shadow print:border transition-colors duration-300 ${isDarkMode ? 'bg-gray-700 bg-opacity-50 backdrop-filter backdrop-blur-lg' : 'bg-white shadow-lg border border-gray-200'}`}
+								>
+									<AccuracyMetrics data={analyticsData.accuracyMetrics} />
+								</motion.div>
+							)}
 
 
 							{/* Revenue Trends Section */}
