@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { 
-  Clock, 
-  MapPin, 
-  Calendar, 
-  User, 
-  Phone, 
+import {
+  Clock,
+  MapPin,
+  Calendar,
+  User,
+  Phone,
   Car,
-  Filter, 
-  Search, 
-  Loader, 
+  Filter,
+  Search,
+  Loader,
   AlertCircle,
   CheckCircle,
   XCircle,
@@ -96,13 +96,13 @@ const TripLogsPage = () => {
         const pickupAddress = ride.pickup?.address?.toLowerCase() || '';
         const dropAddress = ride.drop?.address?.toLowerCase() || '';
         const earlyStopAddress = ride.earlyStop?.address?.toLowerCase() || '';
-        
+
         return customerName.includes(searchLower) ||
-               riderName.includes(searchLower) ||
-               otp.includes(searchLower) ||
-               pickupAddress.includes(searchLower) ||
-               dropAddress.includes(searchLower) ||
-               earlyStopAddress.includes(searchLower);
+          riderName.includes(searchLower) ||
+          otp.includes(searchLower) ||
+          pickupAddress.includes(searchLower) ||
+          dropAddress.includes(searchLower) ||
+          earlyStopAddress.includes(searchLower);
       });
     }
 
@@ -141,13 +141,13 @@ const TripLogsPage = () => {
     const startDate = new Date(start);
     const endDate = new Date(end);
     const diffMs = endDate - startDate;
-    
+
     if (diffMs < 0) return "N/A";
-    
+
     const diffMins = Math.floor(diffMs / 60000);
     const diffHours = Math.floor(diffMins / 60);
     const remainingMins = diffMins % 60;
-    
+
     if (diffHours > 0) {
       return `${diffHours}h ${remainingMins}m`;
     }
@@ -203,7 +203,7 @@ const TripLogsPage = () => {
   return (
     <div className="flex-1 overflow-auto relative z-10">
       <Header title="Trip Logs" />
-      
+
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         {/* Description */}
         <div className={`mb-6 p-4 rounded-lg ${isDarkMode ? 'bg-blue-900 bg-opacity-20 border border-blue-700' : 'bg-blue-50 border border-blue-200'}`}>
@@ -227,7 +227,7 @@ const TripLogsPage = () => {
 
         {/* Error Message */}
         {error && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className={`border p-4 rounded-md mb-6 flex items-center ${isDarkMode ? 'bg-red-500 bg-opacity-20 border-red-500 text-red-200' : 'bg-red-100 border-red-300 text-red-800'}`}
@@ -332,11 +332,10 @@ const TripLogsPage = () => {
             <button
               onClick={handleExport}
               disabled={filteredRides.length === 0}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
-                filteredRides.length === 0
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-green-600 hover:bg-green-700'
-              } text-white`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${filteredRides.length === 0
+                ? 'bg-gray-400 cursor-not-allowed'
+                : 'bg-green-600 hover:bg-green-700'
+                } text-white`}
             >
               <Download size={18} />
               Export CSV
@@ -370,7 +369,7 @@ const TripLogsPage = () => {
             {filteredRides.map((ride, index) => {
               const isExpanded = expandedRide === ride._id;
               const rideNumber = rides.length - rides.findIndex(r => r._id === ride._id);
-              
+
               return (
                 <motion.div
                   key={ride._id}
@@ -380,7 +379,7 @@ const TripLogsPage = () => {
                   className={`backdrop-blur-md shadow-lg rounded-xl border overflow-hidden ${isDarkMode ? 'bg-gray-800 bg-opacity-50 border-gray-700' : 'bg-white border-gray-200'}`}
                 >
                   {/* Ride Header - Always Visible */}
-                  <div 
+                  <div
                     className={`p-4 cursor-pointer ${isDarkMode ? 'hover:bg-gray-700' : 'hover:bg-gray-50'} transition-colors`}
                     onClick={() => toggleExpand(ride._id)}
                   >
@@ -398,7 +397,7 @@ const TripLogsPage = () => {
                           </p>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center space-x-4">
                         {/* Quick Info */}
                         <div className="hidden md:flex items-center space-x-4">
@@ -411,7 +410,7 @@ const TripLogsPage = () => {
                             </div>
                           )}
                         </div>
-                        
+
                         <div className="flex items-center gap-2">
                           <div className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(ride.status)} border`}>
                             {ride.status.replace(/_/g, ' ')}
@@ -423,7 +422,7 @@ const TripLogsPage = () => {
                             </div>
                           )}
                         </div>
-                        
+
                         {isExpanded ? (
                           <ChevronUp size={24} className={isDarkMode ? 'text-gray-400' : 'text-gray-600'} />
                         ) : (
@@ -448,7 +447,7 @@ const TripLogsPage = () => {
                             <Timer size={18} className="mr-2 text-blue-500" />
                             Trip Timeline
                           </h4>
-                          
+
                           <div className="space-y-3">
                             {/* Request Time */}
                             <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-gray-700 bg-opacity-50' : 'bg-gray-50'}`}>
@@ -625,6 +624,66 @@ const TripLogsPage = () => {
                             </div>
                           </div>
 
+                          {/* Joining Passengers (Multi-Passenger) */}
+                          {ride.passengers && ride.passengers.length > 0 && ride.passengers.some(p => !p.isOriginalBooker) && (
+                            <div className="mb-4">
+                              <h5 className={`text-sm font-semibold mb-2 flex items-center ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                <User size={14} className="mr-2" />
+                                Joining Passengers ({ride.passengers.filter(p => !p.isOriginalBooker).length})
+                              </h5>
+                              <div className="space-y-2">
+                                {ride.passengers.filter(p => !p.isOriginalBooker).map((p, idx) => (
+                                  <div
+                                    key={idx}
+                                    className={`p-3 rounded-lg border ${isDarkMode ? 'bg-gray-700 bg-opacity-30 border-gray-600' : 'bg-gray-50 border-gray-200'}`}
+                                  >
+                                    <div className="flex justify-between items-start">
+                                      <div>
+                                        <p className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
+                                          {p.firstName} {p.lastName}
+                                        </p>
+                                        {p.phone && (
+                                          <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                                            {p.phone}
+                                          </p>
+                                        )}
+                                      </div>
+                                      <span className={`text-xs px-2 py-1 rounded-full border ${p.status === 'DROPPED'
+                                        ? (isDarkMode ? 'bg-green-900 text-green-300 border-green-700' : 'bg-green-100 text-green-700 border-green-200')
+                                        : (isDarkMode ? 'bg-blue-900 text-blue-300 border-blue-700' : 'bg-blue-100 text-blue-700 border-blue-200')
+                                        }`}>
+                                        {p.status}
+                                      </span>
+                                      {p.isEarlyStop && (
+                                        <span className={`text-xs px-2 py-1 rounded-full border ml-2 ${isDarkMode ? 'bg-orange-900 text-orange-300 border-orange-700' : 'bg-orange-100 text-orange-700 border-orange-200'}`}>
+                                          EARLY STOP
+                                        </span>
+                                      )}
+                                    </div>
+
+                                    {p.pickup && (
+                                      <div className="mt-2 flex items-start">
+                                        <MapPin size={12} className={`mr-1 mt-0.5 flex-shrink-0 ${isDarkMode ? 'text-green-400' : 'text-green-500'}`} />
+                                        <p className={`text-xs ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                                          <span className="font-medium">Pickup:</span> {p.pickup.address || p.pickup.name}
+                                        </p>
+                                      </div>
+                                    )}
+
+                                    {p.drop && (
+                                      <div className="mt-2 flex items-start">
+                                        <MapPin size={12} className={`mr-1 mt-0.5 flex-shrink-0 ${isDarkMode ? 'text-red-400' : 'text-red-500'}`} />
+                                        <p className={`text-xs ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                                          <span className="font-medium">Drop:</span> {p.drop.address || p.drop.name}
+                                        </p>
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
                           {/* Locations */}
                           <div className="space-y-2">
                             <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-green-900 bg-opacity-20 border border-green-700' : 'bg-green-50 border border-green-200'}`}>
@@ -651,7 +710,7 @@ const TripLogsPage = () => {
                                 </div>
                               </div>
                             </div>
-                            
+
                             {/* Early Stop Location - Only show if ride was completed early */}
                             {ride.earlyStop?.completedEarly && (
                               <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-orange-900 bg-opacity-20 border border-orange-700' : 'bg-orange-50 border border-orange-200'}`}>
