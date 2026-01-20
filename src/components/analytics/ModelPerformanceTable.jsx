@@ -9,7 +9,7 @@ const ModelPerformanceTable = ({ stats }) => {
         // Default demo data ratios
         const demoData = [
             { category: "Ride Booking", tp: 15, fp: 1, fn: 4 },
-            { category: "Route Optimization", tp: 4, fp: 0, fn: 5 },
+            { category: "Route Optimization", tp: 7, fp: 1, fn: 1 },
             { category: "ETA Prediction", tp: 19, fp: 4, fn: 0 },
             { category: "User Matching", tp: 2, fp: 1, fn: 2 },
         ];
