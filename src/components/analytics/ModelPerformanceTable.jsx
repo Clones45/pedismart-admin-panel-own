@@ -33,6 +33,33 @@ const ModelPerformanceTable = ({ stats }) => {
                     fn = failures - fp;
                 }
 
+                // Use real Distance Accuracy for Route Optimization if available
+                if (row.category === "Route Optimization" && stats.accuracyMetrics && stats.accuracyMetrics.metrics) {
+                    const distAcc = stats.accuracyMetrics.metrics.distanceAccuracy;
+                    if (distAcc && distAcc.accuracyPercentage) {
+                        const accuracy = distAcc.accuracyPercentage / 100;
+                        // TP is Accuracy * Total Rides
+                        const totalForCategory = Math.max(tp + fp + fn, stats.totalRides); // Use scaled total or global total
+                        tp = Math.round(totalForCategory * accuracy);
+                        const failures = totalForCategory - tp;
+                        fn = Math.round(failures * 0.8); // Assume most failures are False Negatives (missed optimization)
+                        fp = failures - fn;
+                    }
+                }
+
+                // Use real Time Accuracy for ETA Prediction if available
+                if (row.category === "ETA Prediction" && stats.accuracyMetrics && stats.accuracyMetrics.metrics) {
+                    const timeAcc = stats.accuracyMetrics.metrics.timeAccuracy;
+                    if (timeAcc && timeAcc.accuracyPercentage) {
+                        const accuracy = timeAcc.accuracyPercentage / 100;
+                        const totalForCategory = Math.max(tp + fp + fn, stats.totalRides);
+                        tp = Math.round(totalForCategory * accuracy);
+                        const failures = totalForCategory - tp;
+                        fp = Math.round(failures * 0.7); // Assume most failures are False Positives (wrong prediction)
+                        fn = failures - fp;
+                    }
+                }
+
                 // Recalculate metrics
                 const precision = tp + fp > 0 ? tp / (tp + fp) : 0;
                 const recall = tp + fn > 0 ? tp / (tp + fn) : 0;
