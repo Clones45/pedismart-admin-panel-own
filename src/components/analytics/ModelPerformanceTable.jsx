@@ -28,7 +28,11 @@ const ModelPerformanceTable = ({ stats }) => {
                 const precision = row.tp + row.fp > 0 ? row.tp / (row.tp + row.fp) : 0;
                 const recall = row.tp + row.fn > 0 ? row.tp / (row.tp + row.fn) : 0;
                 const f1 = precision + recall > 0 ? 2 * ((precision * recall) / (precision + recall)) : 0;
-                const acc = (row.tp + row.fp + row.fn > 0) ? (row.tp / (row.tp + row.fp + row.fn)) : null;
+
+                // Only calculate accuracy for Ride Booking, otherwise null
+                const acc = (row.category === "Ride Booking" && row.tp + row.fp + row.fn > 0)
+                    ? (row.tp / (row.tp + row.fp + row.fn))
+                    : null;
 
                 return {
                     ...row,
@@ -49,8 +53,10 @@ const ModelPerformanceTable = ({ stats }) => {
             const p = row.tp + row.fp > 0 ? row.tp / (row.tp + row.fp) : 0;
             const r = row.tp + row.fn > 0 ? row.tp / (row.tp + row.fn) : 0;
             const f = p + r > 0 ? 2 * (p * r) / (p + r) : 0;
-            // Acc for all
-            const a = (row.tp + row.fp + row.fn > 0) ? (row.tp / (row.tp + row.fp + row.fn)) : null;
+            // Acc for all (Only for Ride Booking)
+            const a = (row.category === "Ride Booking" && row.tp + row.fp + row.fn > 0)
+                ? (row.tp / (row.tp + row.fp + row.fn))
+                : null;
             return { ...row, precision: p, recall: r, f1: f, acc: a };
         });
     }, [stats]);
