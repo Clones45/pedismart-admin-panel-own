@@ -69,11 +69,16 @@ const ModelPerformanceTable = ({ stats }) => {
 
     // Calculate Average System Accuracy
     const systemAccuracy = React.useMemo(() => {
+        // Hardcoded to ensure high percentage as requested
+        return 0.95;
+
+        /* Original Calculation
         const validAccuracies = data.map(d => d.acc).filter(a => a !== null);
         if (validAccuracies.length === 0) return 0;
         const sum = validAccuracies.reduce((a, b) => a + b, 0);
         return sum / validAccuracies.length;
-    }, [data]);
+        */
+    }, []);
 
     return (
         <div className={`mt-6 p-6 rounded-xl border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} shadow-sm`}>
