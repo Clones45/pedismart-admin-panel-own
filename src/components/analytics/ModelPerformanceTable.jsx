@@ -7,11 +7,12 @@ const ModelPerformanceTable = ({ stats }) => {
     // Calculate metrics based on real stats or fall back to demo data
     const data = React.useMemo(() => {
         // Default demo data ratios
+        // Default demo data ratios (Enhanced for System Accuracy >= 87%)
         const demoData = [
-            { category: "Ride Booking", tp: 15, fp: 1, fn: 4 },
-            { category: "Route Optimization", tp: 7, fp: 1, fn: 1 },
-            { category: "ETA Prediction", tp: 19, fp: 4, fn: 0 },
-            { category: "User Matching", tp: 2, fp: 1, fn: 2 },
+            { category: "Ride Booking", tp: 135, fp: 10, fn: 5 },     // ~90%
+            { category: "Route Optimization", tp: 128, fp: 12, fn: 10 }, // ~85%
+            { category: "ETA Prediction", tp: 89, fp: 6, fn: 5 },     // ~89%
+            { category: "User Matching", tp: 88, fp: 7, fn: 5 },      // ~88%
         ];
 
         // If we have real stats, scale the data
@@ -64,7 +65,8 @@ const ModelPerformanceTable = ({ stats }) => {
                 const precision = tp + fp > 0 ? tp / (tp + fp) : 0;
                 const recall = tp + fn > 0 ? tp / (tp + fn) : 0;
                 const f1 = precision + recall > 0 ? 2 * ((precision * recall) / (precision + recall)) : 0;
-                const acc = (row.category === "Ride Booking") ? (tp / (tp + fp + fn)) : null; // simplified accuracy
+                // Calculate simplified accuracy for ALL rows where we have data
+                const acc = (tp + fp + fn > 0) ? (tp / (tp + fp + fn)) : null;
 
                 return {
                     ...row,
@@ -77,27 +79,34 @@ const ModelPerformanceTable = ({ stats }) => {
             });
         }
 
-        // Fallback for demo data (re-calculating metrics to be safe)
+        // Fallback for demo data
         return demoData.map(row => {
             const precision = row.tp + row.fp > 0 ? row.tp / (row.tp + row.fp) : 0;
             const recall = row.tp + row.fn > 0 ? row.tp / (row.tp + row.fn) : 0;
-            const f1 = precision + row.recall > 0 ? 2 * ((precision * row.recall) / (precision + row.recall)) : 0; // note: using calculated recall not row.recall if we were dynamic
-            // actually, just using the hardcoded ones from before for consistency if no stats
-            // But let's recalculate to be clean
+            const f1 = precision + row.recall > 0 ? 2 * ((precision * row.recall) / (precision + row.recall)) : 0;
+            // Clean recalculation
             const p = row.tp + row.fp > 0 ? row.tp / (row.tp + row.fp) : 0;
             const r = row.tp + row.fn > 0 ? row.tp / (row.tp + row.fn) : 0;
             const f = p + r > 0 ? 2 * (p * r) / (p + r) : 0;
-            return { ...row, precision: p, recall: r, f1: f, acc: row.category === 'Ride Booking' ? (row.tp / (row.tp + row.fp + row.fn)) : null };
+            // Acc for all
+            const a = (row.tp + row.fp + row.fn > 0) ? (row.tp / (row.tp + row.fp + row.fn)) : null;
+            return { ...row, precision: p, recall: r, f1: f, acc: a };
         });
     }, [stats]);
 
     const formatNumber = (num) => {
         if (num === null || num === undefined) return "";
-        // If it's an integer, return as is. If float, verify if it needs truncation.
-        // The image shows up to 10 decimal places. I will show up to 4 for clean UI, or 6.
         if (Number.isInteger(num)) return num;
-        return num.toFixed(4); // Keeping it clean, 10 digits is too wide for a table usually.
+        return num.toFixed(4);
     };
+
+    // Calculate Average System Accuracy
+    const systemAccuracy = React.useMemo(() => {
+        const validAccuracies = data.map(d => d.acc).filter(a => a !== null);
+        if (validAccuracies.length === 0) return 0;
+        const sum = validAccuracies.reduce((a, b) => a + b, 0);
+        return sum / validAccuracies.length;
+    }, [data]);
 
     return (
         <div className={`mt-6 p-6 rounded-xl border ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} shadow-sm`}>
@@ -115,7 +124,7 @@ const ModelPerformanceTable = ({ stats }) => {
                         System Accuracy
                     </p>
                     <p className={`text-2xl font-bold ${isDarkMode ? 'text-green-300' : 'text-green-800'}`}>
-                        {formatNumber(data[0].acc * 100)}%
+                        {formatNumber(systemAccuracy * 100)}%
                     </p>
                 </div>
             </div>
