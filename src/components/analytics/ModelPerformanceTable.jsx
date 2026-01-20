@@ -85,7 +85,7 @@ const ModelPerformanceTable = ({ stats }) => {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
                 <div>
                     <h3 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>
-                        Model Performance Metrics
+                        Module Performance Metrics
                     </h3>
                     <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                         Detailed breakdown by category
