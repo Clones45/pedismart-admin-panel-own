@@ -9,11 +9,9 @@ const ModelPerformanceTable = ({ stats }) => {
         // Default demo data ratios
         const demoData = [
             { category: "Ride Booking", tp: 15, fp: 1, fn: 4 },
-            { category: "Fare Management", tp: 32, fp: 20, fn: 1 },
             { category: "Route Optimization", tp: 4, fp: 0, fn: 5 },
             { category: "ETA Prediction", tp: 19, fp: 4, fn: 0 },
             { category: "User Matching", tp: 2, fp: 1, fn: 2 },
-            { category: "System Up-time", tp: 0, fp: 2, fn: 2 }
         ];
 
         // If we have real stats, scale the data
