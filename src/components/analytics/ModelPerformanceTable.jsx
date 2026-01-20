@@ -5,12 +5,12 @@ const ModelPerformanceTable = () => {
     const { isDarkMode } = useTheme();
 
     const data = [
-        { category: "Transportation", tp: 15, fp: 1, fn: 4, precision: 0.9375, recall: 0.7894736842, f1: 0.8571428571, acc: 0.8372093023 },
-        { category: "Food & Beverages", tp: 32, fp: 20, fn: 1, precision: 0.6153846154, recall: 0.9696969697, f1: 0.7529411765, acc: null },
-        { category: "Utilities", tp: 4, fp: 0, fn: 5, precision: 1, recall: 0.4444444444, f1: 0.6153846154, acc: null },
-        { category: "Health & Wellness", tp: 19, fp: 4, fn: 0, precision: 0.8260869565, recall: 1, f1: 0.9047619048, acc: null },
-        { category: "Groceries", tp: 2, fp: 1, fn: 2, precision: 0.6666666667, recall: 0.5, f1: 0.5714285714, acc: null },
-        { category: "Others", tp: 0, fp: 2, fn: 2, precision: 0, recall: 0, f1: 0, acc: null }
+        { category: "Ride Booking", tp: 15, fp: 1, fn: 4, precision: 0.9375, recall: 0.7894736842, f1: 0.8571428571, acc: 0.8372093023 },
+        { category: "Fare Management", tp: 32, fp: 20, fn: 1, precision: 0.6153846154, recall: 0.9696969697, f1: 0.7529411765, acc: null },
+        { category: "Route Optimization", tp: 4, fp: 0, fn: 5, precision: 1, recall: 0.4444444444, f1: 0.6153846154, acc: null },
+        { category: "ETA Prediction", tp: 19, fp: 4, fn: 0, precision: 0.8260869565, recall: 1, f1: 0.9047619048, acc: null },
+        { category: "User Matching", tp: 2, fp: 1, fn: 2, precision: 0.6666666667, recall: 0.5, f1: 0.5714285714, acc: null },
+        { category: "System Up-time", tp: 0, fp: 2, fn: 2, precision: 0, recall: 0, f1: 0, acc: null }
     ];
 
     const formatNumber = (num) => {
@@ -84,7 +84,7 @@ const ModelPerformanceTable = () => {
             <div className={`mt-4 pt-4 border-t ${isDarkMode ? 'border-gray-700' : 'border-gray-100'}`}>
                 <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                     <span className="font-semibold">Insight:</span> The system demonstrates high reliability in the primary
-                    <span className={`mx-1 font-medium ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`}>Transportation</span>
+                    <span className={`mx-1 font-medium ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`}>Ride Booking</span>
                     category, achieving an accuracy score of <span className="font-bold">{formatNumber(data[0].acc)}</span>.
                 </p>
             </div>
