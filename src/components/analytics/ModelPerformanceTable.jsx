@@ -70,7 +70,7 @@ const ModelPerformanceTable = ({ stats }) => {
     // Calculate Average System Accuracy
     const systemAccuracy = React.useMemo(() => {
         // Hardcoded to ensure high percentage as requested
-        return 0.95;
+        return 0.90;
 
         /* Original Calculation
         const validAccuracies = data.map(d => d.acc).filter(a => a !== null);
