@@ -29,7 +29,7 @@ const AccuracyConfigCard = ({ title, value, icon: Icon, color, sampleSize, unit 
     );
 };
 
-const AccuracyMetrics = ({ data }) => {
+const AccuracyMetrics = ({ data, stats }) => {
     const { isDarkMode } = useTheme();
 
     if (!data) return null;
@@ -87,7 +87,7 @@ const AccuracyMetrics = ({ data }) => {
                 * Metrics computed based on completed rides vs. initial estimates
             </div>
 
-            <ModelPerformanceTable />
+            <ModelPerformanceTable stats={stats} />
         </div>
     );
 };

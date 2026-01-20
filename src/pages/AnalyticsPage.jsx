@@ -243,7 +243,7 @@ const AnalyticsPage = () => {
 									transition={{ delay: 0.15 }}
 									className={`rounded-xl p-6 print:bg-white print:shadow print:border transition-colors duration-300 ${isDarkMode ? 'bg-gray-700 bg-opacity-50 backdrop-filter backdrop-blur-lg' : 'bg-white shadow-lg border border-gray-200'}`}
 								>
-									<AccuracyMetrics data={analyticsData.accuracyMetrics} />
+									<AccuracyMetrics data={analyticsData.accuracyMetrics} stats={analyticsData} />
 								</motion.div>
 							)}
 
