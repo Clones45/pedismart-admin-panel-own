@@ -14,6 +14,6 @@ return (
         <ModelPerformanceTable />
     </div>
 );
-};
+
 
 export default AccuracyMetrics;
