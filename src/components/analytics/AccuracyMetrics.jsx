@@ -9,11 +9,5 @@ const AccuracyMetrics = ({ stats }) => {
     );
 };
 
-return (
-    <div className="w-full">
-        <ModelPerformanceTable />
-    </div>
-);
-
 
 export default AccuracyMetrics;
