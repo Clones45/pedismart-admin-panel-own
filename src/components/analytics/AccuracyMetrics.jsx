@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from "framer-motion";
 import { CheckCircle, Clock, MapPin, Gauge } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
+import ModelPerformanceTable from "./ModelPerformanceTable";
 
 const AccuracyConfigCard = ({ title, value, icon: Icon, color, sampleSize, unit = "%" }) => {
     const { isDarkMode } = useTheme();
@@ -85,6 +86,8 @@ const AccuracyMetrics = ({ data }) => {
             <div className={`mt-4 text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-400'} italic text-center`}>
                 * Metrics computed based on completed rides vs. initial estimates
             </div>
+
+            <ModelPerformanceTable />
         </div>
     );
 };
